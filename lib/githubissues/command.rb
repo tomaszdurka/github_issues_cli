@@ -17,7 +17,7 @@ module GithubIssues
     end
 
     # @return [Git::Base]
-    def find_git_repo
+    def get_git_repo
       unless @git_repo
         dir = Dir.getwd + '/'
         until Dir.exists? dir + '.git' do
@@ -32,14 +32,14 @@ module GithubIssues
     end
 
     def get_issue_number
-      if find_git_repo.current_branch.match(/issue-([0-9]+)/).nil?
+      if get_git_repo.current_branch.match(/issue-([0-9]+)/).nil?
         raise 'Is not branch issue. Issue branches match `issue-XXX` pattern'
       end
       $1
     end
 
     def get_github_repo
-      url = find_git_repo.remote(:upstream).url
+      url = get_git_repo.remote(:upstream).url
       if url.nil?
         raise 'No `upstream` remote found, please run `setup`'
       end

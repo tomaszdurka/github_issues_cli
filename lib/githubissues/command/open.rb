@@ -5,7 +5,14 @@ module GithubIssues
 
     def execute
       github_repo = get_github_repo
-      issues = Github::Issues.new :user => github_repo[:user], :repo => github_repo[:name]
+      issues_client = Github::Issues.new :user => github_repo[:user], :repo => github_repo[:name]
+      issue = issues_client.create :title => summary
+      issue_number = issue[:number].to_s
+      print on_green white 'Created'
+      puts ' #' + issue_number
+
+      git_repo = get_git_repo
+      git_repo.branch('issue-' + issue_number).checkout
     end
   end
 end

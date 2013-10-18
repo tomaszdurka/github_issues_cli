@@ -3,9 +3,9 @@ module GithubIssues
 
     def execute
       issue_number = get_issue_number
-      issue_client = Github::Issues.new
-      issue = issue_client.get :number => issue_number
-      comments = issue_client.comments.all :issue_id => issue_number
+      issues_client = Github::Issues.new
+      issue = issues_client.get :number => issue_number
+      comments = issues_client.comments.all :issue_id => issue_number
 
       puts
       print bold issue_number + ': ' + issue[:title] + ' '
