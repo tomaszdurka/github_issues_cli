@@ -8,8 +8,9 @@ module GithubIssues
       issues_client = Github::Issues.new :user => github_repo[:user], :repo => github_repo[:name]
       issue = issues_client.create :title => summary
       issue_number = issue[:number].to_s
-      print on_green white 'Created'
-      puts ' #' + issue_number
+      print on_green ' '
+      print ' Created issue '
+      puts bold '#' + issue_number
 
       git_repo = get_git_repo
       git_repo.branch('issue-' + issue_number).checkout

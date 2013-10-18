@@ -3,4 +3,4 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../lib')
 require 'githubissues'
 
-GithubIssues::Command::Manager.run
+GithubIssues::Command_manager.run

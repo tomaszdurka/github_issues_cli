@@ -15,8 +15,10 @@ module GithubIssues
         print white on_red issue[:state]
       end
       puts
-      puts issue[:body]
-      puts
+      if issue[:body]
+        puts issue[:body]
+        puts
+      end
       puts
 
       comments.each do |c|
