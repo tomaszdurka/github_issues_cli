@@ -96,6 +96,7 @@ module GithubIssues
         print on_red ' '
         print bold ' Error: '
         puts e.message
+        exit 1
       end
     end
 
