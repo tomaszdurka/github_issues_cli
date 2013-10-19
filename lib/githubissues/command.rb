@@ -89,5 +89,16 @@ module GithubIssues
       remote.name + '/' + ref
     end
 
+    def run(arguments)
+      begin
+        super
+      rescue Exception => e
+        print on_red ' '
+        print bold ' Error: '
+        puts e.message
+      end
+    end
+
+
   end
 end

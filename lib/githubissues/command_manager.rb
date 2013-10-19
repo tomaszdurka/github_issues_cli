@@ -7,5 +7,6 @@ module GithubIssues
     subcommand "browse", "Navigate to issue HTML url", Command::Browse
     subcommand "open", "Open new issue", Command::Open
     subcommand "push", "Push current state to repo", Command::Push
+    subcommand "pull-request", "Creates pull-request out of current issue", Command::Pull_request
   end
 end
