@@ -7,12 +7,24 @@ module GithubIssues
 
     def initialize(invocation_path, context = {}, parent_attribute_values = {})
       super
+      authenticate
+    end
 
-      github_repo = get_github_repo
+    def authenticate
+      auth_dirname = ENV['HOME'] + '/.github-issues/'
+      Dir.mkdir auth_dirname unless Dir.exists? auth_dirname
+
+      auth_path = auth_dirname + 'token'
+      if File.exists? auth_path
+        token = File.new(auth_path, 'r').gets.chomp
+      else
+        print 'Please provide GitHub token: '
+        token = $stdin.gets.chomp
+        File.new(auth_path, 'w').puts(token)
+      end
+
       Github.configure do |c|
-        c.oauth_token = 'xxx'
-        c.user = github_repo[:user]
-        c.repo = github_repo[:name]
+        c.oauth_token = token
       end
     end
 
@@ -47,9 +59,30 @@ module GithubIssues
         raise 'Remote upstream points to non-github url: ' + url
       end
       if url.match(/github.com[:\/]([^\/]+)\/([^\/]+)\.git$/).nil?
-        raise 'Can\'t extract `user/repo` data'
+        raise 'Can\'t extract `user/repo` data from upstream remote'
       end
       {:user => $1, :name => $2}
+    end
+
+    def get_source issue_number
+      pull_requests_client = Github::PullRequests.new
+      pull_request  = pull_requests_client.get :number => issue_number  rescue return 'upstream/master'
+      user = pull_request.head.repo.owner.login
+      url = pull_request.head.repo.ssh_url
+      ref = pull_request.head.ref
+      remote_name = 'gi-' + user
+      repo = get_git_repo
+      remote = repo.remote remote_name
+      if remote.url.nil?
+        print 'Setting up remote `' + remote_name + '`...'
+        remote = repo.add_remote remote_name, url
+        puts ' Done'
+      end
+      if remote.url != url
+        raise '`' + remote_name + '` remote\'s url differs from expected: `' + remote.url + ' != ' + url + '`'
+      end
+      remote.fetch
+      remote.name + '/' + ref
     end
 
   end
