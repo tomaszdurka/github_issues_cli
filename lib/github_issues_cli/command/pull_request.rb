@@ -6,7 +6,14 @@ module GithubIssuesCli
       issue_number = get_issue_number
       source = @username + ':issue-' + issue_number
       begin
-        Github::PullRequests.new.create :user => github_repo[:user], :repo => github_repo[:name], :head => source, :base => github_repo[:user] + ':master', :issue => issue_number
+        request = {
+            :user => github_repo[:user],
+            :repo => github_repo[:name],
+            :head => source,
+            :base => github_repo[:user] + ':master',
+            :issue => issue_number
+        }
+        Github::PullRequests.new.create request
       rescue
         unless get_source(issue_number).nil?
           raise 'Pull-request for issue #' + issue_number + ' already exists'
