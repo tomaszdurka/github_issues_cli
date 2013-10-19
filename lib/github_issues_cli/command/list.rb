@@ -1,4 +1,4 @@
-module GithubIssues
+module GithubIssuesCli
   class Command::List < Command
 
     option "--mine", :flag, "show only mine issues"

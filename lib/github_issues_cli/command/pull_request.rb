@@ -1,4 +1,4 @@
-module GithubIssues
+module GithubIssuesCli
   class Command::Pull_request < Command
 
     def execute

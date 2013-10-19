@@ -1,4 +1,4 @@
-module GithubIssues
+module GithubIssuesCli
   class Command::Show < Command
 
     def execute
