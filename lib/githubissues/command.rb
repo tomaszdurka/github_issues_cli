@@ -3,7 +3,7 @@ module GithubIssues
 
     include Term::ANSIColor
 
-    attr_accessor :git_repo
+    attr_accessor :git_repo, :username
 
     def initialize(invocation_path, context = {}, parent_attribute_values = {})
       super
@@ -11,16 +11,19 @@ module GithubIssues
     end
 
     def authenticate
-      auth_dirname = ENV['HOME'] + '/.github-issues/'
-      Dir.mkdir auth_dirname unless Dir.exists? auth_dirname
+      config_dirname = ENV['HOME'] + '/.github-issues/'
+      Dir.mkdir config_dirname unless Dir.exists? config_dirname
 
-      auth_path = auth_dirname + 'token'
-      if File.exists? auth_path
-        token = File.new(auth_path, 'r').gets.chomp
+      config_path = config_dirname + 'token'
+      if File.exists? config_path
+        config = JSON.parse File.new(config_path, 'r').gets
+        @username, token = config.values_at 'username', 'token'
       else
         print 'Please provide GitHub token: '
         token = $stdin.gets.chomp
-        File.new(auth_path, 'w').puts(token)
+        @username = Github::Users.new.get(:oauth_token => token).login
+        config = {:username => @username, :token => token}
+        File.new(config_path, 'w').puts config.to_json
       end
 
       Github.configure do |c|
