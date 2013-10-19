@@ -71,10 +71,10 @@ module GithubIssuesCli
       github_repo = get_github_repo
       pull_requests_client = Github::PullRequests.new
       pull_request = pull_requests_client.get :user => github_repo[:user], :repo => github_repo[:name], :number => issue_number rescue return nil
-      user = pull_request.head.repo.owner.login
+      username = pull_request.head.repo.owner.login
       url = pull_request.head.repo.ssh_url
-      ref = pull_request.head.ref
-      remote_name = 'gi-' + user
+      branch = pull_request.head.ref
+      remote_name = username == @username ? 'origin' : username
       repo = get_git_repo
       remote = repo.remote remote_name
       if remote.url.nil?
@@ -86,7 +86,7 @@ module GithubIssuesCli
         raise '`' + remote_name + '` remote\'s url differs from expected: `' + remote.url + ' != ' + url + '`'
       end
       remote.fetch
-      remote.name + '/' + ref
+      remote.name + '/' + branch
     end
 
     def run(arguments)
