@@ -10,7 +10,7 @@ module GithubIssuesCli
 
       puts
       print bold issue_number + ': ' + issue[:title] + ' '
-      if issue[:state] == :open
+      if issue[:state] == 'open'
         print white on_green [:state]
       else
         print white on_red issue[:state]
