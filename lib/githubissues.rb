@@ -4,6 +4,7 @@ module GithubIssues
   require 'term/ansicolor'
   require 'github_api'
   require 'io/console'
+  require 'githubissues/command/checkout'
   require 'githubissues/command'
   require 'githubissues/command/browse'
   require 'githubissues/command/show'
