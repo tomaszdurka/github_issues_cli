@@ -6,12 +6,17 @@ module GithubIssues
     def execute
       branch_name = 'issue-' + issue_number
       repo = get_git_repo
+      source = nil
       if repo.lib.branches_all.map(&:first).include? branch_name
         repo.checkout branch_name
       else
-        repo.lib.checkout get_source, :new_branch => branch_name
+        source = get_source
+        repo.lib.checkout source, :new_branch => branch_name
       end
-      puts 'Checked out #' + issue_number
+      print on_green ' '
+      print ' Checked out #' + issue_number
+      print ' (' + source.split('/').first.sub(/^gi-/, '') + ')' if source
+      puts
     end
 
     def get_source
