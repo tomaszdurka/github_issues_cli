@@ -69,8 +69,7 @@ module GithubIssuesCli
 
     def get_source issue_number
       github_repo = get_github_repo
-      pull_requests_client = Github::PullRequests.new
-      pull_request = pull_requests_client.get :user => github_repo[:user], :repo => github_repo[:name], :number => issue_number rescue return nil
+      pull_request = Github::PullRequests.new.get :user => github_repo[:user], :repo => github_repo[:name], :number => issue_number rescue return nil
       username = pull_request.head.repo.owner.login
       url = pull_request.head.repo.ssh_url
       branch = pull_request.head.ref

@@ -12,6 +12,9 @@ module GithubIssuesCli
       else
         source = get_source issue_number
         if source.nil?
+          github_repo = get_github_repo
+          request = {:user => github_repo[:user], :repo => github_repo[:name], :number => issue_number}
+          Github::Issues.new.get request rescue raise 'Can\'t find issue #' + issue_number
           repo.remote('upstream').fetch
           source = 'upstream/master'
         end
