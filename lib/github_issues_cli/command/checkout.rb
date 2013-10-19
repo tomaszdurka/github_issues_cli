@@ -19,7 +19,7 @@ module GithubIssuesCli
       end
       print on_green ' '
       print ' Checked out #' + issue_number
-      print ' (' + source.split('/').first.sub(/^gi-/, '') + ')' if source
+      print ' (' + source.split('/').first + ')' if source
       puts
     end
   end
