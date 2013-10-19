@@ -11,6 +11,9 @@ module GithubIssues
         repo.checkout branch_name
       else
         source = get_source issue_number
+        if source.nil?
+          source = 'upstream/master'
+        end
         repo.lib.checkout source, :new_branch => branch_name
       end
       print on_green ' '

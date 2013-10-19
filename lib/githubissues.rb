@@ -11,5 +11,6 @@ module GithubIssues
   require 'githubissues/command/browse'
   require 'githubissues/command/show'
   require 'githubissues/command/open'
+  require 'githubissues/command/push'
   require 'githubissues/command_manager'
 end

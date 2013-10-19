@@ -6,5 +6,6 @@ module GithubIssues
     subcommand "show", "Show current issue details", Command::Show
     subcommand "browse", "Navigate to issue HTML url", Command::Browse
     subcommand "open", "Open new issue", Command::Open
+    subcommand "push", "Push current state to repo", Command::Push
   end
 end
