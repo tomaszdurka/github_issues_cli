@@ -5,7 +5,7 @@ module GithubIssues
 
     def execute
       github_repo = get_github_repo
-      Github::Issues.new.create :user => github_repo[:user], :repo => github_repo[:name], :title => summary
+      issue = Github::Issues.new.create :user => github_repo[:user], :repo => github_repo[:name], :title => summary
       issue_number = issue[:number].to_s
 
       get_github_repo
