@@ -1,0 +1,17 @@
+module GithubIssues
+  require 'clamp'
+  require 'git'
+  require 'term/ansicolor'
+  require 'github_api'
+  require 'io/console'
+  require 'json'
+  require 'github_issues/command'
+  require 'github_issues/command/list'
+  require 'github_issues/command/checkout'
+  require 'github_issues/command/browse'
+  require 'github_issues/command/show'
+  require 'github_issues/command/open'
+  require 'github_issues/command/push'
+  require 'github_issues/command/pull_request'
+  require 'github_issues/command_manager'
+end
