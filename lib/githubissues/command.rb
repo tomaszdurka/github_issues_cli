@@ -56,7 +56,7 @@ module GithubIssues
     def get_github_repo
       url = get_git_repo.remote(:upstream).url
       if url.nil?
-        raise 'No `upstream` remote found, please run `setup`'
+        raise 'No `upstream` remote found, please configure it first'
       end
       unless url.start_with?('git@github.com:', 'https://github.com/')
         raise 'Remote upstream points to non-github url: ' + url
