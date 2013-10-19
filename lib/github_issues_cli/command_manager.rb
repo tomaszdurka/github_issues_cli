@@ -1,4 +1,4 @@
-module GithubIssues
+module GithubIssuesCli
   class CommandManager < Clamp::Command
 
     subcommand 'list', 'Lists issues', Command::List

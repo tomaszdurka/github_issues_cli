@@ -1,4 +1,4 @@
-module GithubIssues
+module GithubIssuesCli
   class Command::Open < Command
 
     parameter "summary", "summary of the paramter", :attribute_name => :summary

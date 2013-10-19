@@ -1,4 +1,4 @@
-module GithubIssues
+module GithubIssuesCli
   class Command::Checkout < Command
 
     parameter "issue-number", "number of issue to be worked on", :attribute_name => :issue_number

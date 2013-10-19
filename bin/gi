@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../lib')
-require 'github_issues'
+require 'github_issues_cli'
 
-GithubIssues::CommandManager.run
+GithubIssuesCli::CommandManager.run
