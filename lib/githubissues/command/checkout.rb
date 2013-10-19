@@ -12,6 +12,7 @@ module GithubIssues
       else
         source = get_source issue_number
         if source.nil?
+          repo.remote('upstream').fetch
           source = 'upstream/master'
         end
         repo.lib.checkout source, :new_branch => branch_name
