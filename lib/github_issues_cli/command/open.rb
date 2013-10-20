@@ -1,7 +1,7 @@
 module GithubIssuesCli
   class Command::Open < Command
 
-    parameter "summary", "summary of the paramter", :attribute_name => :summary
+    parameter 'summary', 'issue summary', :attribute_name => :summary
 
     def execute
       github_repo = get_github_repo
