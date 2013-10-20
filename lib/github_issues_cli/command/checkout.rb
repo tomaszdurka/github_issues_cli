@@ -1,7 +1,7 @@
 module GithubIssuesCli
   class Command::Checkout < Command
 
-    parameter "issue-number", "number of issue to be worked on", :attribute_name => :issue_number
+    parameter 'issue-number', 'number of issue to be worked on', :attribute_name => :issue_number
 
     def execute
       branch_name = 'issue-' + issue_number

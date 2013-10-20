@@ -1,7 +1,7 @@
 module GithubIssuesCli
   class Command::List < Command
 
-    option "--mine", :flag, "show only mine issues"
+    option '--mine', :flag, 'show only mine issues'
 
     def execute
       github_repo = get_github_repo
