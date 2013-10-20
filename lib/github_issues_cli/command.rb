@@ -14,16 +14,20 @@ module GithubIssuesCli
       config_dirname = ENV['HOME'] + '/.github-issues/'
       Dir.mkdir config_dirname unless Dir.exists? config_dirname
 
-      config_path = config_dirname + 'token'
+      config_path = config_dirname + 'config'
       if File.exists? config_path
-        config = JSON.parse File.new(config_path, 'r').gets
+        file = File.new(config_path, 'r')
+        config = JSON.parse file.gets
+        file.close
         @username, token = config.values_at 'username', 'token'
       else
         print 'Please provide GitHub token: '
         token = $stdin.gets.chomp
         @username = Github::Users.new.get(:oauth_token => token).login
         config = {:username => @username, :token => token}
-        File.new(config_path, 'w').puts config.to_json
+        file = File.new(config_path, 'w')
+        file.puts config.to_json
+        file.close
       end
 
       Github.configure do |c|
