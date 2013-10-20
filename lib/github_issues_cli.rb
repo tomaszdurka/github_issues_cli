@@ -11,6 +11,7 @@ module GithubIssuesCli
   require 'github_issues_cli/command/browse'
   require 'github_issues_cli/command/show'
   require 'github_issues_cli/command/open'
+  require 'github_issues_cli/command/comment'
   require 'github_issues_cli/command/push'
   require 'github_issues_cli/command/pull_request'
   require 'github_issues_cli/command_manager'
