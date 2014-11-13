@@ -8,12 +8,12 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
 
   s.summary = 'Command line tool for managing issues, pull-requests on GitHub platform'
-  s.version = '0.2.8'
+  s.version = '0.2.12'
 
-  s.add_runtime_dependency 'clamp', '>= 0.5'
-  s.add_runtime_dependency 'git', '>= 1.2.5'
-  s.add_runtime_dependency 'github_api', '>= 0.10.0'
-  s.add_runtime_dependency 'term-ansicolor', '>= 1.2.0'
+  s.add_runtime_dependency 'clamp', '~> 0.6.0'
+  s.add_runtime_dependency 'git', '~> 1.2.0'
+  s.add_runtime_dependency 'github_api', '~> 0.10.0'
+  s.add_runtime_dependency 'term-ansicolor', '~> 1.2.0'
 
   s.files = Dir.glob 'lib/**/*'
   s.executables = ['gi']
