@@ -10,15 +10,15 @@ module GithubIssuesCli
             :user => github_repo[:user],
             :repo => github_repo[:name],
             :head => source,
-            :base => github_repo[:user] + ':master',
+            :base => 'master',
             :issue => issue_number
         }
         Github::PullRequests.new.create request
-      rescue
+      rescue Exception => e
         unless get_source(issue_number).nil?
           raise 'Pull-request for issue #' + issue_number + ' already exists'
         end
-        raise 'Internal error: Cannot create pull-request'
+        raise "Internal error: Cannot create pull-request.\n#{e.inspect}"
       end
       print 'Pull request for issue '
       print bold '#' + issue_number
