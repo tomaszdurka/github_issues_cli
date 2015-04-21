@@ -3,7 +3,7 @@ PATH
   specs:
     github_issues_cli (0.2.12)
       clamp (~> 0.6.0)
-      git (~> 1.2.0)
+      git (= 1.2.8)
       github_api (~> 0.10.0)
       term-ansicolor (~> 1.2.0)
 
@@ -14,7 +14,7 @@ GEM
     clamp (0.6.4)
     faraday (0.8.9)
       multipart-post (~> 1.2.0)
-    git (1.2.9.1)
+    git (1.2.8)
     github_api (0.10.2)
       addressable
       faraday (~> 0.8.7)
