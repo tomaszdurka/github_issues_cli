@@ -7,6 +7,7 @@ module GithubIssuesCli
       if source.nil?
         source = 'origin/issue-' + issue_number
       end
+      
       print 'Pushing code to '
       puts bold source
       remote, branch = source.split('/')
