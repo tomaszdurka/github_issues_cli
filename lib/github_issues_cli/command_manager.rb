@@ -1,6 +1,7 @@
 module GithubIssuesCli
   class CommandManager < Clamp::Command
 
+    subcommand 'clone', 'Clones repository', Command::Clone
     subcommand 'list', 'Lists issues', Command::List
     subcommand 'checkout', 'Checkouts specific issue', Command::Checkout
     subcommand 'show', 'Show current issue details', Command::Show
