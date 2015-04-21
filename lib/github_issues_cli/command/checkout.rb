@@ -18,7 +18,7 @@ module GithubIssuesCli
           repo.remote('upstream').fetch
           source = 'upstream/master'
         end
-        repo.lib.checkout source, :new_branch => branch_name
+        repo.checkout source, :new_branch => branch_name
       end
       print on_green ' '
       print ' Checked out #' + issue_number
