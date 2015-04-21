@@ -57,7 +57,7 @@ module GithubIssuesCli
       $1
     end
 
-    def get_github_repo
+    def get_upstream_repo
       url = get_git_repo.remote(:upstream).url
       if url.nil?
         raise 'No `upstream` remote found, please configure it first'
@@ -71,25 +71,34 @@ module GithubIssuesCli
       {:user => $1, :name => $2}
     end
 
-    def get_source issue_number
-      github_repo = get_github_repo
-      pull_request = Github::PullRequests.new.get :user => github_repo[:user], :repo => github_repo[:name], :number => issue_number rescue return nil
-      username = pull_request.head.repo.owner.login
-      url = pull_request.head.repo.ssh_url
-      branch = pull_request.head.ref
+    def get_pullrequest(issue_number)
+      upstream_repo = get_upstream_repo
+      request = {
+        :user => upstream_repo[:user],
+        :repo => upstream_repo[:name],
+        :number => issue_number,
+      }
+      Github::PullRequests.new.get(request) rescue nil
+    end
+
+    def get_source_branch(issue_number)
+      git_repo = get_git_repo
+      pullrequest = get_pullrequest(issue_number)
+
+      username = pullrequest.head.repo.owner.login
       remote_name = username == @username ? 'origin' : username
-      repo = get_git_repo
-      remote = repo.remote remote_name
-      if remote.url.nil?
+      remote_url = pullrequest.head.repo.ssh_url
+      branch_name = pullrequest.head.ref
+
+      source_remote = git_repo.remote(remote_name)
+      if source_remote.url.nil?
         print 'Setting up remote `' + remote_name + '`...'
-        remote = repo.add_remote remote_name, url
+        source_remote = git_repo.add_remote(remote_name, remote_url)
         puts ' Done'
       end
-      if remote.url != url
-        raise '`' + remote_name + '` remote\'s url differs from expected: `' + remote.url + ' != ' + url + '`'
-      end
-      remote.fetch
-      remote.name + '/' + branch
+
+      source_remote.fetch
+      source_remote.name + '/' + branch_name
     end
 
     def run(arguments)

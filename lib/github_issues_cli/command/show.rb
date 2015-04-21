@@ -2,7 +2,7 @@ module GithubIssuesCli
   class Command::Show < Command
 
     def execute
-      github_repo = get_github_repo
+      github_repo = get_upstream_repo
       issue_number = get_issue_number
       issues_client = Github::Issues.new
       issue = issues_client.get :user => github_repo[:user], :repo => github_repo[:name], :number => issue_number

@@ -4,7 +4,7 @@ module GithubIssuesCli
     option '--mine', :flag, 'show only mine issues'
 
     def execute
-      github_repo = get_github_repo
+      github_repo = get_upstream_repo
       issues_client = Github::Issues.new
       request = {:user => github_repo[:user], :repo => github_repo[:name]}
       request.store(:assignee, @username) if mine?
@@ -12,11 +12,11 @@ module GithubIssuesCli
 
       issues.each do |issue|
         if not issue.assignee.nil? and issue.assignee.login == @username
-          print on_yellow ' '
+          print yellow '●'
         else
           print ' '
         end
-        print bold ' ' + ('#' + issue.number.to_s).rjust(6)
+        print bold(issue.number.to_s.rjust(5) + ':')
         print ' ' + issue.title
         puts
       end

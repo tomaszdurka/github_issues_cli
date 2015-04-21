@@ -4,7 +4,7 @@ module GithubIssuesCli
     parameter 'body', 'comment body', :attribute_name => :body
 
     def execute
-      github_repo = get_github_repo
+      github_repo = get_upstream_repo
       issue_number = get_issue_number
       Github::Issues.new.comments.create :user => github_repo[:user], :repo => github_repo[:name], :issue_id => issue_number, :body => body
       print on_green ' '

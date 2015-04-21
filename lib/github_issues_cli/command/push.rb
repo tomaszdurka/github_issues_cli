@@ -3,7 +3,7 @@ module GithubIssuesCli
 
     def execute
       issue_number = get_issue_number
-      source = get_source issue_number
+      source = get_source_branch(issue_number)
       if source.nil?
         source = 'origin/issue-' + issue_number
       end
