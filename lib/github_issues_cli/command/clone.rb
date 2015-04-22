@@ -2,7 +2,7 @@ module GithubIssuesCli
   class Command::Clone < Command
 
     parameter 'repository', 'name of the Github repository in owner/repo format', :attribute_name => :repository
-    parameter '[target]', 'target location for clone', :attribute_name => :target, :default => ''
+    parameter '[target]', 'target location for clone', :attribute_name => :target
 
     def execute
       owner, name = repository.split('/')
@@ -22,9 +22,10 @@ module GithubIssuesCli
         origin_repo = fork
       end
 
-      path = Pathname.new(target).expand_path(Dir.getwd).to_s
-      puts "Cloning #{repository} into #{path}"
-      git_repo = Git.clone(origin_repo.ssh_url, origin_repo.name, :path => path)
+      target_directory = target || origin_repo.name
+      target_path = Pathname.new(target_directory).expand_path(Dir.getwd)
+      puts "Cloning #{repository} into #{target_path.to_s}"
+      git_repo = Git.clone(origin_repo.ssh_url, target_path.basename.to_s, :path => target_path.dirname.to_s)
       git_repo.add_remote 'upstream', upstream_repo.ssh_url
     end
   end
