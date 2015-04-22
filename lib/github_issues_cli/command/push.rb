@@ -3,15 +3,17 @@ module GithubIssuesCli
 
     def execute
       issue_number = get_issue_number
-      source = get_source_branch(issue_number)
-      if source.nil?
-        source = 'origin/issue-' + issue_number
+      target = get_source_branch(issue_number)
+      if target.nil?
+        target = 'origin/issue-' + issue_number
+        git_repo = get_git_repo
+        git_repo.lib.command_proxy('config', ['push.default', 'upstream'])
+        git_repo.lib.command_proxy('branch', ["--set-upstream-to=#{target}"])
       end
-      
+
       print 'Pushing code to '
-      puts bold source
-      remote, branch = source.split('/')
-      get_git_repo.push(remote, branch)
+      puts bold target
+      get_git_repo.push
     end
   end
 end
