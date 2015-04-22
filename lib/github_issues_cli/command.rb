@@ -35,6 +35,14 @@ module GithubIssuesCli
       end
     end
 
+    def get_git_push_target
+      git_repo = get_git_repo
+      branch_name = git_repo.current_branch
+      remote_name = git_repo.lib.command_proxy('config', ['--get', "branch.#{branch_name}.remote"]) || 'origin'
+      remote_ref = git_repo.lib.command_proxy('config', ['--get', "branch.#{branch_name}.merge"]) || branch_name
+      remote_name + '/' + remote_ref
+    end
+
     # @return [Git::Base]
     def get_git_repo
       unless @git_repo
@@ -86,7 +94,7 @@ module GithubIssuesCli
       pullrequest = get_pullrequest(issue_number)
       return nil if pullrequest.nil?
 
-        username = pullrequest.head.repo.owner.login
+      username = pullrequest.head.repo.owner.login
       remote_name = username == @username ? 'origin' : username
       remote_url = pullrequest.head.repo.ssh_url
       branch_name = pullrequest.head.ref

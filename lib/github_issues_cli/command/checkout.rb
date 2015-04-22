@@ -31,8 +31,9 @@ module GithubIssuesCli
       unless is_local_branch
         print on_green ' '
         puts " Setting upstream to (#{target})"
-        repo.lib.command_proxy('config', ['push.default', 'upstream'])
-        repo.lib.command_proxy('branch', ["--set-upstream-to=#{target}"])
+      remote_name, branch_name = target.split('/')
+        repo.lib.command_proxy('config', ["branch.#{branch_name}.remote", remote_name])
+        repo.lib.command_proxy('config', ["branch.#{branch_name}.merge", "refs/heads/#{branch_name}"])
       end
     end
   end

@@ -5,19 +5,25 @@ module GithubIssuesCli
 
     def execute
       issue_number = get_issue_number
-      raise 'Pull-request for issue #' + issue_number + ' already exists' if get_pullrequest(issue_number)
+      raise "Pull-request for issue ##{issue_number} already exists" if get_pullrequest(issue_number)
 
       github_repo = get_upstream_repo
-      source = @username + ':issue-' + issue_number
+      git_repo = get_git_repo
+      target = get_git_push_target
+      remote, ref = target.split('/', 2)
+      puts git_repo.lib.command_proxy('push', [remote, "#{git_repo.current_branch}:#{ref}"])
+
+      raise 'Cannot create pull-request for non-origin remotes' unless remote == 'origin'
+      puts source = @username + ':' + ref.split('/').last
       begin
         request = {
           :user => github_repo[:user],
           :repo => github_repo[:name],
-          :head => source,
           :base => base,
+          :head => source,
           :issue => issue_number
         }
-        Github::PullRequests.new.create request
+        Github::PullRequests.new.create(request)
       rescue Exception => e
         raise "Internal error: Cannot create pull-request.\n#{e.inspect}"
       end

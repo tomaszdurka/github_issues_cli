@@ -11,7 +11,13 @@ module GithubIssuesCli
       get_upstream_repo
       git_repo = get_git_repo
       git_repo.remote('upstream').fetch
-      git_repo.lib.checkout 'upstream/master', :new_branch => 'issue-' + issue_number
+      remote_name = 'origin'
+      branch_name = 'issue-' + issue_number
+
+      git_repo.lib.command_proxy('checkout', ['-b', branch_name, 'upstream/master'])
+      git_repo.lib.command_proxy('config', ["branch.#{branch_name}.remote", remote_name])
+      git_repo.lib.command_proxy('config', ["branch.#{branch_name}.merge", "refs/heads/#{branch_name}"])
+
       print on_green ' '
       print ' Checked out '
       puts bold '#' + issue_number
