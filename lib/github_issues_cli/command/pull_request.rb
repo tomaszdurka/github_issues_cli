@@ -14,7 +14,7 @@ module GithubIssuesCli
       puts git_repo.lib.command_proxy('push', [remote, "#{git_repo.current_branch}:#{ref}"])
 
       raise 'Cannot create pull-request for non-origin remotes' unless remote == 'origin'
-      puts source = @username + ':' + ref.split('/').last
+      source = @username + ':' + ref.split('/').last
       begin
         request = {
           :user => github_repo[:user],
