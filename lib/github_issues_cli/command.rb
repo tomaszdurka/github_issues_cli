@@ -84,8 +84,9 @@ module GithubIssuesCli
     def get_source_branch(issue_number)
       git_repo = get_git_repo
       pullrequest = get_pullrequest(issue_number)
+      return nil if pullrequest.nil?
 
-      username = pullrequest.head.repo.owner.login
+        username = pullrequest.head.repo.owner.login
       remote_name = username == @username ? 'origin' : username
       remote_url = pullrequest.head.repo.ssh_url
       branch_name = pullrequest.head.ref
