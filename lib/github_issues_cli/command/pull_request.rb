@@ -1,23 +1,24 @@
 module GithubIssuesCli
   class Command::Pull_request < Command
 
+    parameter '[base]', 'base for pull-request', :attribute_name => :base, :default => 'master'
+
     def execute
-      github_repo = get_upstream_repo
       issue_number = get_issue_number
+      raise 'Pull-request for issue #' + issue_number + ' already exists' if get_pullrequest(issue_number)
+
+      github_repo = get_upstream_repo
       source = @username + ':issue-' + issue_number
       begin
         request = {
-            :user => github_repo[:user],
-            :repo => github_repo[:name],
-            :head => source,
-            :base => 'master',
-            :issue => issue_number
+          :user => github_repo[:user],
+          :repo => github_repo[:name],
+          :head => source,
+          :base => base,
+          :issue => issue_number
         }
         Github::PullRequests.new.create request
       rescue Exception => e
-        unless get_pullrequest(issue_number).nil?
-          raise 'Pull-request for issue #' + issue_number + ' already exists'
-        end
         raise "Internal error: Cannot create pull-request.\n#{e.inspect}"
       end
       print 'Pull request for issue '
