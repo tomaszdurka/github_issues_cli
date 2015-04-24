@@ -16,7 +16,7 @@ module GithubIssuesCli
         if source.nil?
           github_repo = get_upstream_repo
           request = {:user => github_repo[:user], :repo => github_repo[:name], :number => issue_number}
-          Github::Issues.new.get(request) rescue raise "Can't find issue ##{issue_number}"
+          Github::Client::Issues.new.get(request) rescue raise "Can't find issue ##{issue_number}"
           repo.remote('upstream').fetch
           source = 'upstream/master'
           target = 'origin/' + branch_name

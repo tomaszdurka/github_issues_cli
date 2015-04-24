@@ -23,7 +23,7 @@ module GithubIssuesCli
       else
         print 'Please provide GitHub token: '
         token = $stdin.gets.chomp
-        @username = Github::Users.new.get(:oauth_token => token).login
+        @username = Github::Client::Users.new.get(:oauth_token => token).login
         config = {:username => @username, :token => token}
         file = File.new(config_path, 'w')
         file.puts config.to_json
@@ -86,7 +86,7 @@ module GithubIssuesCli
         :repo => upstream_repo[:name],
         :number => issue_number,
       }
-      Github::PullRequests.new.get(request) rescue nil
+      Github::Client::PullRequests.new.get(request) rescue nil
     end
 
     def get_source_branch(issue_number)

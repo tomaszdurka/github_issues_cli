@@ -5,7 +5,7 @@ module GithubIssuesCli
 
     def execute
       github_repo = get_upstream_repo
-      issue = Github::Issues.new.create :user => github_repo[:user], :repo => github_repo[:name], :title => summary
+      issue = Github::Client::Issues.new.create :user => github_repo[:user], :repo => github_repo[:name], :title => summary
       issue_number = issue[:number].to_s
 
       get_upstream_repo

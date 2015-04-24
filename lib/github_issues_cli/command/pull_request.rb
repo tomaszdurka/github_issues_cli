@@ -24,7 +24,7 @@ module GithubIssuesCli
           :head => source,
           :issue => issue_number
         }
-        Github::PullRequests.new.create(request)
+        Github::Client::PullRequests.new.create(request)
       rescue Exception => e
         raise "Internal error: Cannot create pull-request.\n#{e.inspect}"
       end

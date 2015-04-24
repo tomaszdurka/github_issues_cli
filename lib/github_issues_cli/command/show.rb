@@ -4,9 +4,9 @@ module GithubIssuesCli
     def execute
       github_repo = get_upstream_repo
       issue_number = get_issue_number
-      issues_client = Github::Issues.new
-      issue = issues_client.get :user => github_repo[:user], :repo => github_repo[:name], :number => issue_number
-      comments = issues_client.comments.all :issue_id => issue_number
+      request = {:user => github_repo[:user], :repo => github_repo[:name], :number => issue_number}
+      issue = Github::Client::Issues.new.get request
+      comments = Github::Client::Issues::Comments.new.list request
 
       puts
       print bold issue_number + ': ' + issue[:title] + ' '
