@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
 
   s.summary = 'Command line tool for managing issues, pull-requests on GitHub platform'
-  s.version = '0.3.1'
+  s.version = '0.3.2'
 
   s.add_runtime_dependency 'clamp', '~> 0.6.0'
   s.add_runtime_dependency 'git', '~> 1.2.8'
