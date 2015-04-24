@@ -23,7 +23,7 @@ module GithubIssuesCli
       else
         print 'Please provide GitHub token: '
         token = $stdin.gets.chomp
-        @username = Github::Users.new.get(:oauth_token => token).login
+        @username = Github::Client::Users.new.get(:oauth_token => token).login
         config = {:username => @username, :token => token}
         file = File.new(config_path, 'w')
         file.puts config.to_json
@@ -86,7 +86,7 @@ module GithubIssuesCli
         :repo => upstream_repo[:name],
         :number => issue_number,
       }
-      Github::PullRequests.new.get(request) rescue nil
+      Github::Client::PullRequests.new.get(request) rescue nil
     end
 
     def get_source_branch(issue_number)
@@ -108,21 +108,6 @@ module GithubIssuesCli
 
       source_remote.fetch
       source_remote.name + '/' + branch_name
-    end
-
-    def run(arguments)
-      begin
-        super
-      rescue Exception => e
-        print on_red ' '
-        print bold ' Error: '
-        if e.message.empty?
-          puts 'Unknown error/Interrupt'
-        else
-          puts e.message
-        end
-        exit 1
-      end
     end
   end
 end

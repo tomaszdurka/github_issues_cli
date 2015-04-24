@@ -5,12 +5,16 @@ module GithubIssuesCli
 
     def execute
       github_repo = get_upstream_repo
-      issues_client = Github::Issues.new
-      request = {:user => github_repo[:user], :repo => github_repo[:name]}
-      request.store(:assignee, @username) if mine?
-      issues = issues_client.list request
+      repo_name = github_repo[:user] + '/' + github_repo[:name]
+      query = [
+        "repo:#{repo_name}",
+      ]
+      query.push("state:open")
+      query.push("assignee:#{@username}") if mine?
+      puts query.join(' ')
+      result = Github::Client::Search.new.issues :q => query.join(' ')
 
-      issues.each do |issue|
+      result.items.each do |issue|
         if not issue.assignee.nil? and issue.assignee.login == @username
           print yellow '●'
         else

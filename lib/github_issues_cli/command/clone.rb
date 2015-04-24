@@ -6,18 +6,18 @@ module GithubIssuesCli
 
     def execute
       owner, name = repository.split('/')
-      upstream_repo = Github::Repos.new.get(:user => owner, :repo => name)
+      upstream_repo = Github::Client::Repos.new.get(:user => owner, :repo => name)
       if upstream_repo.owner.login == @username
         origin_repo = upstream_repo
       else
-        forks = Github::Repos::Forks.new.list(:user => owner, :repo => name)
+        forks = Github::Client::Repos::Forks.new.list(:user => owner, :repo => name)
         fork = forks.find do |fork|
           fork.owner.login == @username
         end
 
         unless fork
           puts "Forking #{repository} for #{@username}"
-          fork = Github::Repos::Forks.new.create(:user => owner, :repo => name)
+          fork = Github::Client::Repos::Forks.new.create(:user => owner, :repo => name)
         end
         origin_repo = fork
       end
