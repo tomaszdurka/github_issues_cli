@@ -11,7 +11,6 @@ module GithubIssuesCli
       ]
       query.push("state:open")
       query.push("assignee:#{@username}") if mine?
-      puts query.join(' ')
       result = Github::Client::Search.new.issues :q => query.join(' ')
 
       result.items.each do |issue|
