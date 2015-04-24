@@ -1,7 +1,9 @@
 module GithubIssuesCli
   class Command::List < Command
 
-    option '--mine', :flag, 'show only mine issues'
+    parameter '[query]', 'github search query', :attribute_name => :custom_query
+    option '--mine', :flag, 'show only mine issues', :attribute_name => :mine
+    option '--show-closed', :flag, 'show closed issues too', :attribute_name => :show_closed
 
     def execute
       github_repo = get_upstream_repo
@@ -9,8 +11,12 @@ module GithubIssuesCli
       query = [
         "repo:#{repo_name}",
       ]
-      query.push("state:open")
-      query.push("assignee:#{@username}") if mine?
+      query.push("state:open") unless show_closed?
+      if custom_query.nil?
+        query.push("assignee:#{@username}") if mine?
+      else
+        query.push(custom_query)
+      end
       result = Github::Client::Search.new.issues :q => query.join(' ')
 
       result.items.each do |issue|
