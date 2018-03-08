@@ -1,3 +1,5 @@
+DEPRECATED
+
 # github-issues
 `gi`is a command line tool to CRUD github issues. It maps every issue to a branch `issue-<issue-number>`.
 
